@@ -16,6 +16,7 @@ RUN \
  echo "**** install packages ****" && \
  apt-get update && \
  apt-get install -y \
+	iproute2 \
 	jq \
 	libicu60 && \
  echo "**** install jackett ****" && \

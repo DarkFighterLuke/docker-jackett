@@ -16,6 +16,7 @@ RUN \
  echo "**** install packages ****" && \
  apt-get update && \
  apt-get install -y \
+ 	iproute2 \
 	jq \
 	libicu60 && \
  echo "**** install jackett ****" && \
@@ -28,6 +29,8 @@ RUN \
  curl -o \
  /tmp/jacket.tar.gz -L \
 	"https://github.com/Jackett/Jackett/releases/download/${JACKETT_RELEASE}/Jackett.Binaries.LinuxARM64.tar.gz" && \
+ echo "**** run init.sh ****" && \
+ sh /init.sh && \
  tar xf \
  /tmp/jacket.tar.gz -C \
 	/app/Jackett --strip-components=1 && \
