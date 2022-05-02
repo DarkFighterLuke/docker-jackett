@@ -1,5 +1,8 @@
 #!/usr/bin/with-contenv bash
 
+ip route del default
+ip route add default via 172.22.0.2
+echo "nameserver 8.8.4.4" >> /etc/resolv.conf
 chown -R abc:abc \
 	/config
 
