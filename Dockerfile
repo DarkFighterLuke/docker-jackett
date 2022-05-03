@@ -46,6 +46,7 @@ RUN \
 
 # add local files
 COPY root/ /
+ADD CustomDefinitions/* /app/Jackett/Definitions/
 
 # ports and volumes
 VOLUME /config
