@@ -56,7 +56,7 @@ The architectures supported by this image are:
 | :----: | :----: | ---- |
 | x86-64 | ✅ | amd64-\<version tag\> |
 | arm64 | ✅ | arm64v8-\<version tag\> |
-| armhf| ✅ | arm32v7-\<version tag\> |
+| armhf | ✅ | arm32v7-\<version tag\> |
 
 ## Version Tags
 
@@ -66,13 +66,10 @@ This image provides various versions that are available via tags. Please read th
 | :----: | :----: |--- |
 | latest | ✅ | Stable Jackett Releases |
 | development | ✅ | Latest Jackett Releases |
-
 ## Application Setup
 
 The web interface is at `<your-ip>:9117` , configure various trackers and connections to other apps there.
 More info at [Jackett](https://github.com/Jackett/Jackett).
-
-Disable autoupdates in the webui to prevent jackett crashing, the image is refreshed when new versions are released.
 
 ## Usage
 
@@ -90,12 +87,12 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/London
+      - TZ=Etc/UTC
       - AUTO_UPDATE=true #optional
-      - RUN_OPTS=<run options here> #optional
+      - RUN_OPTS= #optional
     volumes:
-      - <path to data>:/config
-      - <path to blackhole>:/downloads
+      - /path/to/data:/config
+      - /path/to/blackhole:/downloads
     ports:
       - 9117:9117
     restart: unless-stopped
@@ -108,14 +105,15 @@ docker run -d \
   --name=jackett \
   -e PUID=1000 \
   -e PGID=1000 \
-  -e TZ=Europe/London \
+  -e TZ=Etc/UTC \
   -e AUTO_UPDATE=true `#optional` \
-  -e RUN_OPTS=<run options here> `#optional` \
+  -e RUN_OPTS= `#optional` \
   -p 9117:9117 \
-  -v <path to data>:/config \
-  -v <path to blackhole>:/downloads \
+  -v /path/to/data:/config \
+  -v /path/to/blackhole:/downloads \
   --restart unless-stopped \
   lscr.io/linuxserver/jackett:latest
+
 ```
 
 ## Parameters
@@ -127,9 +125,9 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-p 9117` | WebUI |
 | `-e PUID=1000` | for UserID - see below for explanation |
 | `-e PGID=1000` | for GroupID - see below for explanation |
-| `-e TZ=Europe/London` | Specify a timezone to use EG Europe/London. |
+| `-e TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
 | `-e AUTO_UPDATE=true` | Allow Jackett to update inside of the container (currently recommended by Jackett and enabled by default) |
-| `-e RUN_OPTS=<run options here>` | Optionally specify additional arguments to be passed. |
+| `-e RUN_OPTS=` | Optionally specify additional arguments to be passed. |
 | `-v /config` | Where Jackett should store its config file. |
 | `-v /downloads` | Path to torrent blackhole. |
 
@@ -242,6 +240,9 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **13.02.23:** - Add icu-data-full to address [ICU issue](https://github.com/Jackett/Jackett/issues/14008) with Cyrillic character sets.
+* **11.02.23:** - Rebase to Alpine 3.17, migrate to s6v3.
+* **10.05.22:** - Rebase to Ubuntu Focal.
 * **24.05.20:** - Allow user to optionally enable auto updates.
 * **31.12.19:** - Remove agressive startup chowning.
 * **23.03.19:** - Switching to new Base images, shift to arm32v7 tag.
